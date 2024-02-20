@@ -1,2 +1,17 @@
-1,"MacCoffee Pure Espresso Forte",250,"8887290146203","не очень"
-2,"Красная Цена (Алмафуд)",800,\N,"норм и дешево очень"
+{
+    "products":
+    {
+        "id":1,
+        "name":"MacCoffee Pure Espresso Forte",
+        "weight":250,
+        "barcode":"8887290146203",
+        "review":"не очень"
+        },
+    {
+        "id":2,
+        "name":"Красная Цена (Алмафуд)",
+        "weight":800,
+        "barcode":null,
+        "review":"норм и дешево очень"
+        }
+    }
