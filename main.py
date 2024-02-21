@@ -8,15 +8,9 @@ from pyzbar.pyzbar import decode
 from PIL import Image
 
 #appdatabase = 1 #get from JSON 
-appdatabase = json.load()
-
-def main():
-	image_path = 'images/barcode.png'
-	image = Image.open(image_path)
-
-	#barcode_num = '8887290146203'
-	barcode_num = decode(image)
-	print(barcode_num)
+with open('project_db/data/products.json') as json_data:
+	appdatabase = json.load(json_data)
+pic = 'images/barcode.png'
 
 def get_image(file):
 	"""Проверяет файл на пригодность к обработке. Получает файл, возвращает изображение или инструкцию
@@ -24,7 +18,9 @@ def get_image(file):
 	#file proof to image
 	#note = 'F* u upload a photo'
 	#return image if proof else print(note)
-	pass
+	image_path = file
+	image = Image.open(image_path)
+	return image
 
 def format_image():
 	"""Форматирует фотографию до пригодной картинки с баркодом. Возвращает пригодную картинку.
@@ -37,10 +33,10 @@ def format_image():
 def scan(barcode_image):
 	"""Обрабатывает пригодную картинку. Возвращает стринг с кодом
 	"""
-	#scan image with barcode
-	#barcode = decode(barcode_image)
-	#return string barcode
-	pass
+
+	#barcode_num = '8887290146203'
+	barcode_num = decode(barcode_image)
+	return barcode_num
 
 def barcode_corrector(barcode_raw):
 	"""Обрабатывает полученный от сканера код до чистого набора цифр. Возвращает стринг с кодом
@@ -60,11 +56,15 @@ def known_product(barcode_num):
 def scanner():
 	"""Включает сканер, обрабатывает изображение. Возвращает стринг с кодом
 	"""
-	#get_image()
 	#format_image()
-	#scan()
-	#return barcode_num
-	pass
+	barcode_num = scan(get_image(pic))
+	for obj in barcode_num:
+		data = obj.data
+	return data
+
+
+def main():
+		print(scanner())
 
 
 if __name__ == '__main__':
