@@ -4,14 +4,16 @@
 
 import pytesseract as pt
 import os
+from pyzbar.pyzbar import decode
+
 from PIL import Image
 
 def main():
-	image_path = 'images/barcode.jpg'
+	image_path = 'images/barcode.png'
 	image = Image.open(image_path)
 
 	# barcode_num = '1301234567890'
-	barcode_num = pt.image_to_string(image)
+	barcode_num = decode(image)
 	print(barcode_num)
 
 if __name__ == '__main__':
