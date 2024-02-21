@@ -3,18 +3,19 @@
 # нужен приемщик изображений, отправщик кода, обработчик изображения
 
 # import pytesseract as pt
-# import os
-# from pyzbar.pyzbar import decode
-# from PIL import Image
+import os, json
+from pyzbar.pyzbar import decode
+from PIL import Image
 
-appdatabase = 1 #get from JSON 
+#appdatabase = 1 #get from JSON 
+appdatabase = json.load()
 
 def main():
 	image_path = 'images/barcode.png'
 	image = Image.open(image_path)
 
-	barcode_num = '8887290146203'
-	# barcode_num = decode(image)
+	#barcode_num = '8887290146203'
+	barcode_num = decode(image)
 	print(barcode_num)
 
 def get_image(file):
@@ -33,11 +34,19 @@ def format_image():
 	#return image with barcode
 	pass
 
-def scan():
+def scan(barcode_image):
 	"""Обрабатывает пригодную картинку. Возвращает стринг с кодом
 	"""
 	#scan image with barcode
+	#barcode = decode(barcode_image)
 	#return string barcode
+	pass
+
+def barcode_corrector(barcode_raw):
+	"""Обрабатывает полученный от сканера код до чистого набора цифр. Возвращает стринг с кодом
+	"""
+	#edit barcode_raw to clear string barcode
+	#return barcode_num
 	pass
 
 def known_product(barcode_num):
