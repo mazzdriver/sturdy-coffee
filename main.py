@@ -16,18 +16,21 @@ pic = 'images/barcode.png'
 def get_image(file_path:str):
 	"""Проверяет файл на пригодность к обработке. Получает файл, возвращает изображение или инструкцию
 	"""
-	#file proof to image
-	#note = 'F* u upload a photo'
-	#return image if proof else print(note)
-	image = Image.open(file_path)
-	return image
+	note = '\nAttach image, please\n'
+	for _ in range(5):
+		try:
+			image = Image.open(file_path)
+		except IOError:
+			print(note)
+		return image	
+
 
 def format_image(raw_img):
 	"""Форматирует фотографию до пригодной картинки с баркодом. Возвращает пригодную картинку.
 	"""
 	#find and mask the barcode on image
 	#image_with_barcode = crop(mask(raw_img))
-	#return image_with_ barcode
+	#return image_with_barcode
 	pass
 
 def decode(barcode_image):
