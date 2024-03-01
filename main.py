@@ -20,11 +20,13 @@ def format_image(raw_img):
 	#return image_with_barcode
 	pass
 
-def barcode_decoder(barcode_raw):
+def barcode_decoder(barcode_image):
 	"""Обрабатывает картинку до чистого набора цифр. Возвращает стринг с кодом
 	"""
 	#edit barcode_raw to clear string barcode
-	barcode_num = str(decode(barcode_raw))
+	num = decode(barcode_image)
+	for obj in num:
+		barcode_num = str(obj.data.decode())
 	return barcode_num
 
 def get_known_product(barcode:str, datasheet:list):
@@ -58,11 +60,15 @@ def add_new(data:dict, datafile):
 
 #main logic
 def main():
-		barcode = barcode_decoder(format_image(image))
+		#barcode = barcode_decoder(format_image(image))
+		barcode = str(barcode_decoder(image))
+		product = []
 		if known_product(barcode, appdatabase):
 			product = get_known_product(barcode, appdatabase)
 		else:
 			input_new_data()
+		
+		print(product)
 
 # and go
 if __name__ == '__main__':
