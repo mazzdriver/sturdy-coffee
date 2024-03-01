@@ -1,30 +1,17 @@
-
-# сканер штрихкода принимает изображение и возвращает код стрингом
-# нужен приемщик изображений, отправщик кода, обработчик изображения
-
-# import pytesseract as pt
+# imports first
 import os, json
 from pyzbar.pyzbar import decode
 from PIL import Image
 
-#appdatabase = 1 #get from JSON 
+# then variables
 datafile = 'project_db/data/products.json'
-with open(datafile) as json_data:
-	appdatabase = json.load(json_data)
 pic = 'images/barcode.png'
 
-def get_image(file_path:str):
-	"""Проверяет файл на пригодность к обработке. Получает файл, возвращает изображение или инструкцию
-	"""
-	note = '\nAttach image, please\n'
-	for _ in range(5):
-		try:
-			image = Image.open(file_path)
-		except IOError:
-			print(note)
-		return image	
+with open(datafile) as json_data:
+	appdatabase = json.load(json_data)
+image = Image.open(pic)
 
-
+# then functions
 def format_image(raw_img):
 	"""Форматирует фотографию до пригодной картинки с баркодом. Возвращает пригодную картинку.
 	"""
@@ -33,28 +20,12 @@ def format_image(raw_img):
 	#return image_with_barcode
 	pass
 
-def decode(barcode_image):
-	"""Обрабатывает пригодную картинку. Возвращает стринг с кодом
-	"""
-	#barcode_num = '8887290146203'
-	barcode_num = decode(barcode_image)
-	return barcode_num
-
-def barcode_corrector(barcode_raw):
-	"""Обрабатывает полученный от сканера код до чистого набора цифр. Возвращает стринг с кодом
+def barcode_decoder(barcode_raw):
+	"""Обрабатывает картинку до чистого набора цифр. Возвращает стринг с кодом
 	"""
 	#edit barcode_raw to clear string barcode
-	#return barcode_num
-	pass
-
-def scanner():
-	"""Включает сканер, обрабатывает изображение. Возвращает стринг с кодом
-	"""
-	#format_image()
-	barcode_num = decode(get_image(pic))
-	for obj in barcode_num:
-		data = obj.data
-	return data
+	barcode_num = str(decode(barcode_raw))
+	return barcode_num
 
 def get_known_product(barcode:str, datasheet:list):
 	"""Обращается к базе данных в поисках товара. Возвращает массив информации о конкретном товаре
@@ -64,18 +35,13 @@ def get_known_product(barcode:str, datasheet:list):
 	product = list(filter(lambda x:x["barcode"]==barcode,datasheet))
 	return product
 
-def known_product(barcode, datasheet):
+def known_product(barcode:str, datasheet:list):
 	"""Проверяет наличие товара в базе данных сервиса. Переключается в дальнейшие процессы.
 	"""
-	if barcode in datasheet:
-		product = get_known_product(barcode, datasheet)
-	else:
-		
-		#proceed to script to add product and review
-		pass
+	return barcode in datasheet
 
 def input_new_data():
-	"""Помогает в создании новой записи в БД в формате массива. Возвращает массив с информацией к записи.
+	"""Помогает в занесении новой записи в БД в формате массива. Возвращает массив с информацией к записи.
 	"""
 	#new_data =[]
 	#return new_data
@@ -90,9 +56,14 @@ def add_new(data:dict, datafile):
 	#return success
 	pass
 
+#main logic
 def main():
-		print(scanner())
+		barcode = barcode_decoder(format_image(image))
+		if known_product(barcode, appdatabase):
+			product = get_known_product(barcode, appdatabase)
+		else:
+			input_new_data()
 
-
+# and go
 if __name__ == '__main__':
 	main()
